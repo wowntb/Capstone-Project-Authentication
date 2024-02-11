@@ -1,6 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 
 function LoginPage() {
@@ -9,27 +8,7 @@ function LoginPage() {
     email: "jonjones@ufc.com",
     password: "bonebreaker",
   });
-
   const navigate = useNavigate();
-
-  const checkTokenValidity = () => {
-    const token = localStorage.getItem("token");
-
-    if (token) {
-      const decodedToken = jwtDecode(token);
-      const currentTime = Date.now() / 1000;
-      if (decodedToken.exp < currentTime) {
-        navigate("/login");
-      } else {
-        alert("You are already logged in.");
-        navigate("/user");
-      }
-    }
-  };
-
-  useEffect(() => {
-    checkTokenValidity();
-  });
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -45,13 +24,10 @@ function LoginPage() {
       const response = await axios.post("/login", loginData);
       const token = response.data.token;
 
-      // Store the token in the local storage
-      localStorage.setItem("token", token);
-
+      // Store the token in the session storage.
+      sessionStorage.setItem("token", token);
       // The user will be alerted with a message if the login is successful.
       alert("Login successful!");
-      console.log(localStorage.getItem("token"));
-
       // Redirect to a new page after successful login. The page shows the user's info.
       navigate("/user");
     } catch (error) {
@@ -63,33 +39,39 @@ function LoginPage() {
   return (
     <div>
       <h2>Login</h2>
-      <form className="form" onSubmit={handleLogin}>
-        <div>
-          <label htmlFor="email">Email:</label>
-          <input
-            type="email"
-            name="email"
-            id="email"
-            value={loginData.email}
-            onChange={handleChange}
-            required
-            autoComplete="email"
-          />
+      <div className="outer-div">
+        <div className="inner-div">
+          <form className="userInfo-container" onSubmit={handleLogin}>
+            <p>
+              <label htmlFor="email">Email:</label>
+              <input
+                type="email"
+                name="email"
+                id="email"
+                value={loginData.email}
+                onChange={handleChange}
+                required
+                autoComplete="email"
+              />
+            </p>
+
+            <p>
+              <label htmlFor="password">Password:</label>
+              <input
+                type="password"
+                name="password"
+                id="password"
+                value={loginData.password}
+                onChange={handleChange}
+                required
+                autoComplete="current-password"
+              />
+            </p>
+
+            <button type="submit">Login</button>
+          </form>
         </div>
-        <div>
-          <label htmlFor="password">Password:</label>
-          <input
-            type="password"
-            name="password"
-            id="password"
-            value={loginData.password}
-            onChange={handleChange}
-            required
-            autoComplete="current-password"
-          />
-        </div>
-        <button type="submit">Login</button>
-      </form>
+      </div>
     </div>
   );
 }

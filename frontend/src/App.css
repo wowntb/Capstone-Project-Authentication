@@ -1,58 +1,119 @@
 body,
 html {
+  background-color: #365857;
   display: flex;
   justify-content: center;
+  font-family: "Arial", sans-serif;
 }
 
 h2 {
   margin: 10px;
+  background-color: rgb(255, 255, 255);
+  border-radius: 10px;
+  padding: 10px;
+}
+
+label {
+  background-color: #07ca0054;
+  border-radius: 5px;
+  padding: 5px;
+  margin: 5px;
 }
 
 button {
   margin: 10px;
-  color: #444;
-  background-color: #ccc;
-  border-color: #ccc;
+  color: #fff;
+  background-color: #00a56ebf;
+  border: none;
+  border-radius: 4px;
+  padding: 8px 12px;
+  font-size: 14px;
+  cursor: pointer;
 }
 
-.navigation {
-  display: inline-block;
-  margin: 10px;
-  padding: 8px 12px;
-  color: #fff;
-  background-color: #007bff;
-  border: none;
-  border-radius: 6px;
+.navigation,
+nav {
+  margin: 5px;
+  padding: 10px;
+  color: #000000;
+  background-color: #00ff6a;
+
+  border-radius: 4px;
   text-decoration: none;
 }
 
 .navigation:hover {
-  background-color: #0056b3;
+  color: #fff;
+}
+
+.userInfo-container p {
+  display: flex;
+  align-items: center;
+  margin: 5px;
+  color: #000000;
+}
+
+.userInfo-container label {
+  width: 150px;
+  text-align: center;
+  margin-right: 10px;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 10px;
 }
 
 .form label {
   display: flex;
-  align-items: center;
 }
 
-.form input {
-  margin-left: 10px;
+.user-box {
+  background-color: #2eff7e;
+  box-shadow: 0px 5px 8px #2eff8c;
+  color: #fff;
+  padding: 5px 10px;
+  margin: 25px 10px;
+  border-radius: 10px;
 }
 
 .outer-div {
   display: inline-block;
-  border: 1px solid #ccc;
-  padding: 20px;
+  padding: 10px;
 }
 
 .inner-div {
   margin: auto;
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #ffffff;
+}
+
+#site-header {
+  border-radius: 10px;
+  background-color: #333;
+  color: #fff;
+  padding: 20px;
+  margin: 10px;
+  text-align: center;
+}
+
+#site-header h1 {
+  font-family: Verdana;
+  margin: 0;
+  font-size: 36px;
+}
+
+#site-header p {
+  margin: 10px;
+  font-size: 18px;
 }
 
 #profile-pic {
-  width: 50px;
-  height: 50px;
-  border-radius: 5px;
+  width: 90px;
+  border-radius: 10px;
   margin: 5px;
 }
 

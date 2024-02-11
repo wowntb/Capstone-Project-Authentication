@@ -25,7 +25,7 @@ const userSchema = new mongoose.Schema({
   },
   division: {
     type: Number,
-    default: 1,
+    default: 0,
   },
 });
 

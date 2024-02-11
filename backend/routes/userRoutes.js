@@ -7,28 +7,12 @@ router.post("/register", userController.registerUser);
 // Login endpoint.
 router.post("/login", userController.loginUser);
 // User info endpoint.
-router.get("/user/:id", userController.getUserInfo);
+router.get("/user/:email", userController.getUserInfo);
+// Get all credentials from a division endpoint.
+router.get("/credentials/:division", userController.getDivisionCredentials);
+// Update credentials endpoint.
+router.put("/update/:id", userController.updateCredentials);
 // Get all users endpoint.
-router.get("/credentials", async (req, res) => {
-  try {
-  } catch {}
-});
-
-// Authorisation middleware to check user permissions for specific routes.
-function checkPermissions(permission) {
-  return function (req, res, next) {
-    if (
-      !req.user ||
-      !req.user.permissions ||
-      !req.user.permissions.includes(permission)
-    ) {
-      return res.status(403).json({
-        message:
-          "Forbidden: You do not have permission to access this resource.",
-      });
-    }
-    next();
-  };
-}
+router.get("/users", userController.getAllUsers);
 
 module.exports = router;
