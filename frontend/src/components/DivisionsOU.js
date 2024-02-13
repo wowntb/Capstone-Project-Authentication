@@ -18,9 +18,9 @@ function DivisionOU(props) {
 
   const handleEdit = (user) => {
     // Handles the edit action for a user.
-    // Only admins can edit credentials.
-    if (userInfo.role !== "admin") {
-      alert("Access denied. Only admins can edit credentials.");
+    // Only admins/managers can edit credentials.
+    if (userInfo.role !== "admin" || user.role !== "manager") {
+      alert("Access denied. Only admins/managers can edit credentials.");
     } else {
       // Sets the selectedUser state and the editingUser state to the user being edited.
       setSelectedUser(user._id);
@@ -44,7 +44,7 @@ function DivisionOU(props) {
   };
 
   useEffect(() => {
-    // userInfo is fetched when the component mounts to see if the user has the admin role.
+    // userInfo is fetched when the component mounts to see if the user has the admin/manager role.
     fetchUserInfo();
   }, []);
 
@@ -87,6 +87,7 @@ function DivisionOU(props) {
                         onChange={(event) => handleInputChange(event, "role")}
                       >
                         <option value="admin">admin</option>
+                        <option value="manager">user</option>
                         <option value="user">user</option>
                       </select>
                     </p>
