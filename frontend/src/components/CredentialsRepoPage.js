@@ -161,7 +161,7 @@ function CredentialsRepoPage(props) {
               {addingUser ? (
                 <div className="userInfo-container">
                   <p>
-                    <label htmlFor="newUsername">Username:</label>
+                    <label htmlFor="newUsername">Username</label>
                     <input
                       type="text"
                       id="newUsername"
@@ -173,7 +173,7 @@ function CredentialsRepoPage(props) {
                   </p>
 
                   <p>
-                    <label htmlFor="newEmail">Email:</label>
+                    <label htmlFor="newEmail">Email</label>
                     <input
                       type="text"
                       id="newEmail"
@@ -185,7 +185,7 @@ function CredentialsRepoPage(props) {
                   </p>
 
                   <p>
-                    <label htmlFor="newPassword">Password:</label>
+                    <label htmlFor="newPassword">Password</label>
                     <input
                       type="text"
                       id="newPassword"
