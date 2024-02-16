@@ -2,9 +2,10 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const helmet = require("helmet");
-
 // Import user routes
-const userRoutes = require("./routes/userRoutes");
+const user_routes = require("./routes/user_routes");
+// Import credentials routes
+const credentials_routes = require("./routes/credential_routes");
 
 // Create an Express application
 const app = express();
@@ -29,8 +30,8 @@ app.use(express.json());
 app.use(helmet());
 
 // Route setup
-// Direct requests to the userRoutes module
-app.use("/", userRoutes);
+// Direct requests to the user_routes and credential_routes modules.
+app.use("/", user_routes, credentials_routes);
 
 // Start the server and listen on the specified port
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

@@ -3,16 +3,14 @@ import { useState } from "react";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
 import NavigationBar from "./components/NavigationBar";
-import RegisterPage from "./components/RegisterPage";
-import LoginPage from "./components/LoginPage";
-import CredentialsRepoPage from "./components/CredentialsRepoPage";
-import UserPage from "./components/UserPage";
-import "./App.css";
-import DivisionOU from "./components/DivisionsOU";
+import Register from "./components/pages/Register";
+import Login from "./components/pages/Login";
+import Credentials from "./components/pages/Credentials";
+import UserAdministration from "./components/pages/UserAdministration";
+import DivisionOU from "./components/pages/DivisionOU";
 
 function App() {
   const [userInfo, setUserInfo] = useState({});
-  const [divisionUsers, setDivisionUsers] = useState([]);
 
   const fetchUserInfo = async () => {
     try {
@@ -20,19 +18,10 @@ function App() {
       const decodedToken = jwtDecode(token); // Decodes the token stored in session storage to get the user ID.
 
       // The user email from the decoded token is used to fetch the user's info.
-      const response = await axios.get(`/user/${decodedToken.email}`);
+      const response = await axios.get(`/user/${decodedToken.username}`);
       setUserInfo(response.data);
     } catch (error) {
       console.error("Error: " + error.response.data);
-    }
-  };
-
-  const fetchDivisionUsers = async () => {
-    try {
-      const response = await axios.get(`/credentials/${userInfo.division}`);
-      setDivisionUsers(response.data);
-    } catch (error) {
-      console.error("Error fetching division users: " + error.response.data);
     }
   };
 
@@ -44,30 +33,28 @@ function App() {
       </div>
       <NavigationBar />
       <Routes>
-        <Route path="/" element={<RegisterPage />} />
-        <Route path="/register" element={<RegisterPage />} />
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/" element={<Register />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/login" element={<Login />} />
         <Route
           path="/credentials"
           element={
-            <CredentialsRepoPage
-              userInfo={userInfo}
-              fetchUserInfo={fetchUserInfo}
-              divisionUsers={divisionUsers}
-              fetchDivisionUsers={fetchDivisionUsers}
-            />
+            <Credentials userInfo={userInfo} fetchUserInfo={fetchUserInfo} />
           }
         />
         <Route
-          path="/division"
+          path="/division-ou-management"
           element={
             <DivisionOU userInfo={userInfo} fetchUserInfo={fetchUserInfo} />
           }
         />
         <Route
-          path="/user"
+          path="/administration"
           element={
-            <UserPage userInfo={userInfo} fetchUserInfo={fetchUserInfo} />
+            <UserAdministration
+              userInfo={userInfo}
+              fetchUserInfo={fetchUserInfo}
+            />
           }
         />
       </Routes>

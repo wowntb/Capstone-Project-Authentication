@@ -33,12 +33,13 @@ button {
 
 .navigation,
 nav {
-  margin: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   padding: 10px;
   color: #000000;
   background-color: #00ff6a;
-
-  border-radius: 4px;
+  border-radius: 5px;
   text-decoration: none;
 }
 
@@ -46,32 +47,10 @@ nav {
   color: #fff;
 }
 
-.userInfo-container p {
+.credentials-container {
   display: flex;
-  align-items: center;
-  margin: 5px;
-  color: #000000;
-}
-
-.userInfo-container label {
-  width: 150px;
-  text-align: center;
-  margin-right: 10px;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin: 10px;
-}
-
-.form label {
-  display: flex;
-}
-
-.user-box {
-  background-color: #2eff7e;
+  justify-content: center;
+  background-color: #2eff7e42;
   box-shadow: 0px 5px 8px #2eff8c;
   color: #fff;
   padding: 5px 10px;
@@ -79,15 +58,31 @@ nav {
   border-radius: 10px;
 }
 
+.credentials-container p {
+  display: flex;
+  align-items: center;
+  margin: 5px;
+  color: #000000;
+}
+
+.credentials-container label,
+label {
+  width: 150px;
+  text-align: center;
+  margin-right: 10px;
+  flex-shrink: 0; /* Prevent shrinking */
+}
+
 .outer-div {
   display: inline-block;
+  width: 500px;
   padding: 10px;
 }
 
 .inner-div {
-  margin: auto;
+  margin: 10px;
   padding: 20px;
-  border-radius: 10px;
+  border-radius: 15px;
   background-color: #ffffff;
 }
 

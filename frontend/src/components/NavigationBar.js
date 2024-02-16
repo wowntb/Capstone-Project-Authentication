@@ -27,14 +27,14 @@ function NavigationBar() {
       {/* These link will only be rendered if there is a token in session storage. */}
       {sessionStorage.getItem("token") && (
         <>
-          <Link to="/user" className="navigation">
-            User
-          </Link>
           <Link to="/credentials" className="navigation">
-            Credentials Repository
+            Credentials
           </Link>
-          <Link to="/division" className="navigation">
+          <Link to="/division-ou-management" className="navigation">
             Division & OU Management
+          </Link>
+          <Link to="/administration" className="navigation">
+            User Administration
           </Link>
           <Link to="/login" className="navigation" onClick={handleLogout}>
             Logout

@@ -2,10 +2,10 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
-function LoginPage() {
+function Login() {
   const [loginData, setLoginData] = useState({
     // This is data that can be used to test the login form.
-    email: "jonjones@ufc.com",
+    username: "jonbonejones",
     password: "bonebreaker",
   });
   const navigate = useNavigate();
@@ -29,7 +29,7 @@ function LoginPage() {
       // The user will be alerted with a message if the login is successful.
       alert("Login successful!");
       // Redirect to a new page after successful login. The page shows the user's info.
-      navigate("/user");
+      navigate("/credentials");
     } catch (error) {
       alert("Login failed. Please try again. Error: " + error.response.data);
       console.error("Login error: " + error.response.data);
@@ -41,39 +41,43 @@ function LoginPage() {
       <h2>Login</h2>
       <div className="outer-div">
         <div className="inner-div">
-          <form className="userInfo-container" onSubmit={handleLogin}>
-            <p>
-              <label htmlFor="email">Email:</label>
-              <input
-                type="email"
-                name="email"
-                id="email"
-                value={loginData.email}
-                onChange={handleChange}
-                required
-                autoComplete="email"
-              />
-            </p>
+          <div className="credentials-container">
+            <form onSubmit={handleLogin}>
+              <div>
+                <p>
+                  <label htmlFor="username">Username</label>
+                  <input
+                    type="text"
+                    name="username"
+                    id="username"
+                    value={loginData.username}
+                    onChange={handleChange}
+                    required
+                    autoComplete="username"
+                  />
+                </p>
 
-            <p>
-              <label htmlFor="password">Password:</label>
-              <input
-                type="password"
-                name="password"
-                id="password"
-                value={loginData.password}
-                onChange={handleChange}
-                required
-                autoComplete="current-password"
-              />
-            </p>
+                <p>
+                  <label htmlFor="password">Password</label>
+                  <input
+                    type="password"
+                    name="password"
+                    id="password"
+                    value={loginData.password}
+                    onChange={handleChange}
+                    required
+                    autoComplete="current-password"
+                  />
+                </p>
+              </div>
 
-            <button type="submit">Login</button>
-          </form>
+              <button type="submit">Login</button>
+            </form>
+          </div>
         </div>
       </div>
     </div>
   );
 }
 
-export default LoginPage;
+export default Login;

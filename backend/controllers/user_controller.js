@@ -1,16 +1,15 @@
-const User = require("../models/userModel");
+const User = require("../models/user_model");
 const jwt = require("jsonwebtoken");
 require("dotenv").config();
 const JWT_SECRET = process.env.JWT_SECRET;
 
-// Controller functions for CRUD operations.
 module.exports = {
   registerUser: async (req, res) => {
     try {
-      const { username, email, password } = req.body;
+      const { username, password } = req.body;
 
       // Check if user already exists.
-      let user = await User.findOne({ email });
+      let user = await User.findOne({ username });
       if (user) {
         return res.status(400).json({ message: "User already exists" });
       }
@@ -18,7 +17,6 @@ module.exports = {
       // Create a new user.
       user = new User({
         username,
-        email,
         password,
       });
 
@@ -34,10 +32,10 @@ module.exports = {
 
   loginUser: async (req, res) => {
     try {
-      const { email, password } = req.body;
+      const { username, password } = req.body;
 
       // Check if the user exists.
-      const user = await User.findOne({ email });
+      const user = await User.findOne({ username });
       if (!user) {
         return res.status(400).json({ message: "Invalid Credentials" });
       }
@@ -48,7 +46,7 @@ module.exports = {
       }
 
       // Generate JWT token.
-      const token = jwt.sign({ email: user.email }, JWT_SECRET);
+      const token = jwt.sign({ username: user.username }, JWT_SECRET);
 
       res.json({ token });
     } catch (err) {
@@ -59,29 +57,8 @@ module.exports = {
 
   getUserInfo: async (req, res) => {
     try {
-      const user = await User.findOne({ email: req.params.email });
+      const user = await User.findOne({ username: req.params.username });
       res.json(user);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server Error");
-    }
-  },
-
-  getDivisionCredentials: async (req, res) => {
-    try {
-      const users = await User.find({ division: req.params.division });
-      res.json(users);
-    } catch (err) {
-      console.error(err.message);
-      res.status(500).send("Server Error");
-    }
-  },
-
-  updateCredentials: async (req, res) => {
-    try {
-      const { id } = req.params;
-      const user = await User.findByIdAndUpdate(id, req.body);
-      res.json({ message: "Credentials updated successfully" });
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
@@ -95,6 +72,25 @@ module.exports = {
     } catch (err) {
       console.error(err.message);
       res.status(500).send("Server Error");
+    }
+  },
+
+  updateUser: async (req, res) => {
+    const updatedUser = req.body;
+    try {
+      let user = await User.findById(updatedUser._id);
+      if (!user) {
+        return res.status(404).json({ error: "Credential not found" });
+      }
+      user = await User.findByIdAndUpdate(
+        updatedUser._id,
+        { $set: updatedUser },
+        { new: true }
+      );
+      res.json(user);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server error");
     }
   },
 };
