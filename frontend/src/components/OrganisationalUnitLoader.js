@@ -7,6 +7,7 @@ function OrganisationalUnitLoader(props) {
   const [credentials, setCredentials] = useState([]);
   const [selectedCredentials, setSelectedCredentials] = useState(null);
   const [editingCredentials, setEditingCredentials] = useState({});
+  const [showAddForm, setShowAddForm] = useState(false);
 
   const handleInputChange = (event, field) => {
     setEditingCredentials({
@@ -39,6 +40,29 @@ function OrganisationalUnitLoader(props) {
     } catch (error) {
       console.error("Update credentials error: " + error.response.data);
       alert("Update credentials failed: " + error.response.data.message);
+    }
+  };
+
+  const handleAdd = () => {
+    setShowAddForm(true);
+  };
+
+  const handleCancelAdd = () => {
+    setShowAddForm(false);
+    setEditingCredentials({});
+  };
+
+  const handleSaveAdd = async () => {
+    try {
+      // Set the OU of the credentials to the current OU of the component.
+      editingCredentials.ou = OU;
+      await axios.post(`/credentials/add/${OU}`, editingCredentials);
+      setEditingCredentials({});
+      setShowAddForm(false);
+      fetchCredentials();
+    } catch (error) {
+      console.error("Create credentials error: " + error.response.data);
+      alert("Create credentials failed: " + error.response.data.message);
     }
   };
 
@@ -90,7 +114,7 @@ function OrganisationalUnitLoader(props) {
                     <input
                       id="name"
                       type="text"
-                      value={editingCredentials.name || ""}
+                      value={editingCredentials.name}
                       onChange={(event) => handleInputChange(event, "name")}
                     />
                   </p>
@@ -100,7 +124,7 @@ function OrganisationalUnitLoader(props) {
                     <input
                       id="username"
                       type="text"
-                      value={editingCredentials.username || ""}
+                      value={editingCredentials.username}
                       onChange={(event) => handleInputChange(event, "username")}
                     />
                   </p>
@@ -110,7 +134,7 @@ function OrganisationalUnitLoader(props) {
                     <input
                       id="password"
                       type="text"
-                      value={editingCredentials.password || ""}
+                      value={editingCredentials.password}
                       onChange={(event) => handleInputChange(event, "password")}
                     />
                   </p>
@@ -120,7 +144,7 @@ function OrganisationalUnitLoader(props) {
                     <input
                       id="division"
                       type="text"
-                      value={editingCredentials.division || ""}
+                      value={editingCredentials.division}
                       onChange={(event) => handleInputChange(event, "division")}
                     />
                   </p>
@@ -160,6 +184,60 @@ function OrganisationalUnitLoader(props) {
               )}
             </div>
           ))}
+          {!showAddForm && <button onClick={handleAdd}>Add</button>}
+          {showAddForm && (
+            <div className="credentials-container">
+              <div>
+                <p>
+                  <label htmlFor="name">Credentials Name</label>
+                  <input
+                    id="name"
+                    type="text"
+                    value={editingCredentials.name}
+                    onChange={(event) => handleInputChange(event, "name")}
+                  />
+                </p>
+
+                <p>
+                  <label htmlFor="username">Username</label>
+                  <input
+                    id="username"
+                    type="text"
+                    value={editingCredentials.username}
+                    onChange={(event) => handleInputChange(event, "username")}
+                  />
+                </p>
+
+                <p>
+                  <label htmlFor="password">Password</label>
+                  <input
+                    id="password"
+                    type="text"
+                    value={editingCredentials.password}
+                    onChange={(event) => handleInputChange(event, "password")}
+                  />
+                </p>
+
+                <p>
+                  <label htmlFor="division">Division</label>
+                  <input
+                    id="division"
+                    type="text"
+                    value={editingCredentials.division}
+                    onChange={(event) => handleInputChange(event, "division")}
+                  />
+                </p>
+
+                <p>
+                  <label htmlFor="ou">OU</label>
+                  {OU}
+                </p>
+
+                <button onClick={handleSaveAdd}>Save</button>
+                <button onClick={handleCancelAdd}>Cancel</button>
+              </div>
+            </div>
+          )}
         </div>
       ) : (
         <p>Loading...</p>

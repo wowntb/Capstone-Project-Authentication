@@ -1,6 +1,17 @@
 const Credential = require("../models/credential_model");
 
 module.exports = {
+  addCredential: async (req, res) => {
+    const newCredential = new Credential(req.body);
+    try {
+      const credential = await newCredential.save();
+      res.json(credential);
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send("Server error");
+    }
+  },
+
   updateCredential: async (req, res) => {
     const newCredential = req.body;
     try {
