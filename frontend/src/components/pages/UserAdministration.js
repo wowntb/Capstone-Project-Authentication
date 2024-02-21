@@ -44,6 +44,30 @@ function UserAdministration(props) {
         editingUser.division_access = editingUser.division_access.split(",");
       }
 
+      // This loop checks if the OU access list has valid OUs.
+      for (const ou of editingUser.ou_access) {
+        const lowercaseOU = ou.toLowerCase();
+        if (
+          lowercaseOU !== "news management" &&
+          lowercaseOU !== "software reviews" &&
+          lowercaseOU !== "hardware reviews" &&
+          lowercaseOU !== "opinion publishing"
+        ) {
+          // If the OU access list has an invalid OU, an alert is shown and the function returns.
+          return alert("Invalid OU access. Please enter a valid OU access.");
+        }
+      }
+
+      // This loop checks if the division access list has valid divisions.
+      for (const division of editingUser.division_access) {
+        const parsedDivision = parseInt(division);
+        if (parsedDivision > 10 || parsedDivision < 1) {
+          return alert(
+            "Invalid division access. Please enter a valid division access."
+          );
+        }
+      }
+
       // Sends a PUT request using the editingUser state to update the user details.
       await axios.put(`/user/${editingUser._id}`, editingUser);
 
