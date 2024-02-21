@@ -7,7 +7,6 @@ import Register from "./components/pages/Register";
 import Login from "./components/pages/Login";
 import Credentials from "./components/pages/Credentials";
 import UserAdministration from "./components/pages/UserAdministration";
-import DivisionOU from "./components/pages/DivisionOU";
 
 function App() {
   const [userInfo, setUserInfo] = useState({});
@@ -40,12 +39,6 @@ function App() {
           path="/credentials"
           element={
             <Credentials userInfo={userInfo} fetchUserInfo={fetchUserInfo} />
-          }
-        />
-        <Route
-          path="/division-ou-management"
-          element={
-            <DivisionOU userInfo={userInfo} fetchUserInfo={fetchUserInfo} />
           }
         />
         <Route

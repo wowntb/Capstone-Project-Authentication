@@ -54,7 +54,7 @@ function OrganisationalUnitLoader(props) {
 
   const handleSaveAdd = async () => {
     try {
-      // Set the OU of the credentials to the current OU of the component.
+      // The OU is set to the OU of the component.
       editingCredentials.ou = OU;
       await axios.post(`/credentials/add/${OU}`, editingCredentials);
       setEditingCredentials({});
@@ -68,16 +68,19 @@ function OrganisationalUnitLoader(props) {
 
   const fetchCredentials = async () => {
     // This fetch credentials function retrieves all credentials first.
-    if (userInfo && userInfo.ou_access) {
+    if (userInfo && userInfo.ou_access && userInfo.division_access) {
       try {
         const response = await axios.get(`/credentials/${OU}`);
-        // Then it filters the credentials based on the user's role and OU/division access.
+        // Then it filters the credentials based on the user's role and OU access.
         const allowedCredentials = response.data.filter((credential) => {
           if (userInfo.role === "admin" || userInfo.role === "manager") {
             return true;
           } else if (
-            userInfo.ou_access.includes(credential.ou) &&
-            userInfo.division_access.includes(credential.division)
+            // If the user is a normal user then each credential is checked to see if the OU is in the user's OU access list.
+            userInfo.ou_access.some(
+              // The OU access list is compared to the OU of the credential in a case-insensitive manner.
+              (access) => access.toLowerCase() === credential.ou.toLowerCase()
+            )
           ) {
             return true;
           } else {
@@ -89,6 +92,8 @@ function OrganisationalUnitLoader(props) {
         console.error("Fetch credentials error: " + error.response.data);
         alert("Fetch credentials failed: " + error.response.data.message);
       }
+    } else {
+      console.log("User info not available yet.");
     }
   };
 
@@ -103,7 +108,7 @@ function OrganisationalUnitLoader(props) {
   return (
     <>
       <h3>{OU} Credentials</h3>
-      {credentials ? (
+      {credentials && userInfo ? (
         <div>
           {credentials.map((credential, index) => (
             <div className="credentials-container" key={index}>
@@ -140,12 +145,26 @@ function OrganisationalUnitLoader(props) {
                   </p>
 
                   <p>
+                    <label htmlFor="organisational-unit">
+                      Organisational Unit
+                    </label>
+                    <input
+                      id="organisational-unit"
+                      type="text"
+                      value={editingCredentials.ou}
+                      onChange={(event) => handleInputChange(event, "ou")}
+                    />
+                  </p>
+
+                  <p>
                     <label htmlFor="division">Division</label>
                     <input
                       id="division"
-                      type="text"
+                      type="number"
                       value={editingCredentials.division}
                       onChange={(event) => handleInputChange(event, "division")}
+                      max={10}
+                      min={1}
                     />
                   </p>
 
@@ -184,7 +203,12 @@ function OrganisationalUnitLoader(props) {
               )}
             </div>
           ))}
-          {!showAddForm && <button onClick={handleAdd}>Add</button>}
+          {/* The add button is only rendered if the user has access to the OU. */}
+          {!showAddForm &&
+            userInfo.ou_access &&
+            userInfo.ou_access.includes(OU) && (
+              <button onClick={handleAdd}>Add</button>
+            )}
           {showAddForm && (
             <div className="credentials-container">
               <div>
@@ -222,9 +246,11 @@ function OrganisationalUnitLoader(props) {
                   <label htmlFor="division">Division</label>
                   <input
                     id="division"
-                    type="text"
+                    type="number"
                     value={editingCredentials.division}
                     onChange={(event) => handleInputChange(event, "division")}
+                    max={10}
+                    min={1}
                   />
                 </p>
 

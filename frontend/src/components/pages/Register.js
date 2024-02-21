@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
 
@@ -30,6 +30,12 @@ function Register() {
       alert("Registration failed: " + error.response.data.message);
     }
   };
+
+  useEffect(() => {
+    // Clear the session storage when the component mounts.
+    // This is to ensure that the user is logged out when they visit the registration page.
+    sessionStorage.clear();
+  }, []);
 
   return (
     <div>

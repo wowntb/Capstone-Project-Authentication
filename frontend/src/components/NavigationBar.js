@@ -30,9 +30,6 @@ function NavigationBar() {
           <Link to="/credentials" className="navigation">
             Credentials
           </Link>
-          <Link to="/division-ou-management" className="navigation">
-            Division & OU Management
-          </Link>
           <Link to="/administration" className="navigation">
             User Administration
           </Link>
